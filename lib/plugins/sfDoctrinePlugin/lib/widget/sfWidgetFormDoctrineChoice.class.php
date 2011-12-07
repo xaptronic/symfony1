@@ -59,6 +59,7 @@ class sfWidgetFormDoctrineChoice extends sfWidgetFormChoice
     $this->addOption('query', null);
     $this->addOption('multiple', false);
     $this->addOption('table_method', null);
+	$this->addOption('collection', null);
 
     parent::configure($options, $attributes);
   }
@@ -76,7 +77,15 @@ class sfWidgetFormDoctrineChoice extends sfWidgetFormChoice
       $choices[''] = true === $this->getOption('add_empty') ? '' : $this->translate($this->getOption('add_empty'));
     }
 
-    if (null === $this->getOption('table_method'))
+	if (null === $this->getOption('query'))
+	{
+		$objects = $this->getOption('collection');
+		if (!($objects instanceof Doctrine_Collection))
+		{
+			throw new Exception('option collection must be instance of Doctrine_Collection');
+		}
+	}
+    elseif (null === $this->getOption('table_method'))
     {
       $query = null === $this->getOption('query') ? Doctrine_Core::getTable($this->getOption('model'))->createQuery() : $this->getOption('query');
       if ($order = $this->getOption('order_by'))
