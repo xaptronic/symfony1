@@ -77,7 +77,7 @@ class sfWidgetFormDoctrineChoice extends sfWidgetFormChoice
       $choices[''] = true === $this->getOption('add_empty') ? '' : $this->translate($this->getOption('add_empty'));
     }
 
-	if (null === $this->getOption('query'))
+	if (null !== $this->getOption('collection'))
 	{
 		$objects = $this->getOption('collection');
 		if (!($objects instanceof Doctrine_Collection))
